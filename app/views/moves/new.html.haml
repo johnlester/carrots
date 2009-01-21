@@ -1,0 +1,13 @@
+%h1 Moves controller, new action
+
+%p 
+  Edit this file in 
+  %tt app/views/moves/new.html.erb
+
+= error_messages_for @mof
+
+= form_for(@mof, :action => url(:moves) ) do
+  %p
+    = submit "Create"
+
+= link_to 'Back', url(:moves)

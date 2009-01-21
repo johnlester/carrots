@@ -1,0 +1,10 @@
+%h1 Games controller, new action
+
+
+= error_messages_for @game
+
+= form_for(@game, :action => url(:games) ) do
+  %p
+    = submit "Create"
+
+= link_to 'Back', url(:games)

@@ -1,0 +1,15 @@
+%h1
+  Games controller, edit action
+%p
+  Edit this file in
+  %tt
+    app/views/games/edit.html.erb
+= error_messages_for @game
+
+= form_for(@game, :action => url(:game, @game)) do
+  %p
+    = submit "Update"
+
+= link_to 'Show', url(:game, @game)
+|
+= link_to 'Back', url(:games)

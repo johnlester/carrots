@@ -1,0 +1,14 @@
+%h1
+  Games controller, available action
+%p
+Games available to join
+%table
+  %tr
+  - for game in @games
+    %tr
+      %td
+        = "Play vs. #{game.characters[0].name}"
+      %td
+        = link_to 'Join', url(:join_game,  :game => game, :character => @character)
+
+= link_to 'Start new game', url(:create_game, @character)

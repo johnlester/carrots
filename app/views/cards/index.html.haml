@@ -1,0 +1,16 @@
+%h1
+  Cards controller, index action
+%p
+  Edit this file in
+  %tt
+    app/views/cards/index.html.erb
+%table
+  %tr
+  - for card in @cards
+    %tr
+      %td
+        = link_to 'Show', url(:card, card)
+      %td
+        = link_to 'Edit', url(:edit_card,  card)
+
+= link_to 'New', url(:new_card)

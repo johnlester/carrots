@@ -1,0 +1,15 @@
+%h1
+  Moves controller, edit action
+%p
+  Edit this file in
+  %tt
+    app/views/moves/edit.html.erb
+= error_messages_for @mof
+
+= form_for(@mof, :action => url(:mof, @mof)) do
+  %p
+    = submit "Update"
+
+= link_to 'Show', url(:mof, @mof)
+|
+= link_to 'Back', url(:moves)

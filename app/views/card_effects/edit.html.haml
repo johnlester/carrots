@@ -1,0 +1,15 @@
+%h1
+  CardEffects controller, edit action
+%p
+  Edit this file in
+  %tt
+    app/views/card_effects/edit.html.erb
+= error_messages_for @card_effect
+
+= form_for(@card_effect, :action => url(:card_effect, @card_effect)) do
+  %p
+    = submit "Update"
+
+= link_to 'Show', url(:card_effect, @card_effect)
+|
+= link_to 'Back', url(:card_effects)

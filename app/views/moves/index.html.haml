@@ -1,0 +1,16 @@
+%h1
+  Moves controller, index action
+%p
+  Edit this file in
+  %tt
+    app/views/moves/index.html.erb
+%table
+  %tr
+  - for mof in @moves
+    %tr
+      %td
+        = link_to 'Show', url(:mof, mof)
+      %td
+        = link_to 'Edit', url(:edit_mof,  mof)
+
+= link_to 'New', url(:new_mof)

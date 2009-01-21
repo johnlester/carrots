@@ -1,0 +1,15 @@
+%h1
+  Characters controller, edit action
+%p
+  Edit this file in
+  %tt
+    app/views/characters/edit.html.erb
+= error_messages_for @character
+
+= form_for(@character, :action => url(:character, @character)) do
+  %p
+    = submit "Update"
+
+= link_to 'Show', url(:character, @character)
+|
+= link_to 'Back', url(:characters)

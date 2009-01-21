@@ -1,0 +1,23 @@
+%h1
+  Characters controller, index action
+%p
+  = "#{@characters.count} characters"
+%table
+  %tr
+  - for character in @characters
+    %tr
+      %td
+        = character.name
+      %td
+        = link_to 'Show', url(:character, character)
+      %td
+        = link_to 'Edit', url(:edit_character,  character)
+      %td
+        - if character.game
+          Waiting for opponent
+        - else
+          = link_to "Start game with #{character.name}", url(:create_game, character)
+      %td
+        = link_to "Join existing game with #{character.name}", url(:available_games, character)
+
+= link_to 'New', url(:new_character)

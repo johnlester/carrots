@@ -1,0 +1,10 @@
+%h1
+  Games controller, show action
+%p
+  Edit this file in
+  %tt
+    app/views/games/show.html.erb
+
+= link_to 'Edit',  url(:edit_game,  @game)
+|
+= link_to 'Back', url(:games)

@@ -1,0 +1,16 @@
+%h1
+  Games controller, index action
+%p
+  Edit this file in
+  %tt
+    app/views/games/index.html.erb
+%table
+  %tr
+  - for game in @games
+    %tr
+      %td
+        = link_to 'Show', url(:game, game)
+      %td
+        = link_to 'Edit', url(:edit_game,  game)
+
+= link_to 'New', url(:new_game)

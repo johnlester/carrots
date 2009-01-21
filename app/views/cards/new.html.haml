@@ -1,0 +1,13 @@
+%h1 Cards controller, new action
+
+%p 
+  Edit this file in 
+  %tt app/views/cards/new.html.erb
+
+= error_messages_for @card
+
+= form_for(@card, :action => url(:cards) ) do
+  %p
+    = submit "Create"
+
+= link_to 'Back', url(:cards)

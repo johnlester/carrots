@@ -1,0 +1,16 @@
+%h1
+  CardEffects controller, index action
+%p
+  Edit this file in
+  %tt
+    app/views/card_effects/index.html.erb
+%table
+  %tr
+  - for card_effect in @card_effects
+    %tr
+      %td
+        = link_to 'Show', url(:card_effect, card_effect)
+      %td
+        = link_to 'Edit', url(:edit_card_effect,  card_effect)
+
+= link_to 'New', url(:new_card_effect)
