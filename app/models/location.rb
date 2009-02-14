@@ -9,8 +9,8 @@ class Location
   has n, :agents
 
   def initialize(options = {})
-    options[:name_pattern] ||= NamePattern.create([:start_cons, :simple_vowels, :mid_cons, :endings])
-    self.name = options[:name_pattern].random
+    options[:name_style] ||= NameStyle.create([:start_cons, :simple_vowels, :mid_cons, :endings])
+    self.name = options[:name_style].random
   end
 
   def make_neighbors_with(location)

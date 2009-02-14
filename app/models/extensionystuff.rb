@@ -22,6 +22,18 @@ class Array
     end
   end
 
+  def randomly_weight(weights = [1,2,5])
+    result = {}
+    self.each do |item|
+      if result[item]
+        result[item] += weights.random
+      else
+        result[item] = weights.random
+      end
+    end
+    return result
+  end
+
 end
 
 class Hash

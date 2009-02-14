@@ -27,8 +27,8 @@ class Agent
     new_agent = Agent.new
 
     #random name
-    name_pattern = NamePattern.first || NamePattern.create([:start_cons, :simple_vowels, :mid_cons, :endings])
-    new_agent.name = name_pattern.random    
+    name_style = NameStyle.first || NameStyle.create
+    new_agent.name = name_style.random    
     
     
     new_agent.save

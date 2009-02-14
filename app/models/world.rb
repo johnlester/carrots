@@ -7,18 +7,18 @@ class World
 
   has n, :locations
   has n, :agents
-  belongs_to :name_pattern
+  belongs_to :name_style
 
   def World.generate_world(options = {})
     options[:nodes] ||= 30
     options[:max_connections] ||= 5
-    options[:name_pattern] ||= [:start_cons, :simple_vowels, :mid_cons, :endings]
+    options[:name_style] ||= [:start_cons, :simple_vowels, :mid_cons, :endings]
     
     new_world = World.create
     
     #random name
-    self.name_pattern = NamePattern.create(options[:name_pattern])
-    new_world.name = self.name_pattern.random
+    self.name_style = NameStyle.create(options[:name_style])
+    new_world.name = self.name_style.random
   
     #generate locations
     
@@ -30,7 +30,7 @@ class World
   def create_location_network(nodes, max_connections)
     # create locations
     nodes.times do |n|
-      self.locations << Location.create(:name_pattern => self.name_pattern)
+      self.locations << Location.create(:name_style => self.name_style)
       self.save
       
     end

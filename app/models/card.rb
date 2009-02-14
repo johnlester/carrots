@@ -17,8 +17,8 @@ class Card
     new_card = Card.new
     
     #random name
-    name_pattern = NamePattern.first || NamePattern.create([:start_cons, :simple_vowels, :mid_cons, :endings])
-    new_card.name = name_pattern.random
+    name_style = NameStyle.first || NameStyle.create
+    new_card.name = name_style.random
     
     #this round effects
     this_round_effect_types = {:direct_damage => 1000, :damage_blocking => 600}

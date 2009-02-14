@@ -17,8 +17,8 @@ class Character
     new_character = Character.new
 
     #random name
-    name_pattern = NamePattern.first || NamePattern.create([:start_cons, :simple_vowels, :mid_cons, :endings])
-    new_character.name = name_pattern.random
+    name_style = NameStyle.first || NameStyle.create
+    new_character.name = name_style.random
     
     new_character.save
     return new_character
