@@ -3,90 +3,48 @@ class Game
   
   property :id, Serial
   property :round, Integer, :default => 1
-  property :active?, Boolean, :default => false
   property :finished?, Boolean, :default => false
   has n, :characters
-  has n, :moves, :class_name => "Move"
+#  has n, :moves, :class_name => "Move"
   
-  def initialize(character_id)    
-    character = Character.get(character_id)
-    self.characters << character
+  def initialize(list_of_characters = [])    
+    list_of_characters.each do |character|     
+      self.characters << character
+    end
     self.save
   end
+
+  def enemies
+    #returns list of enemies
+  end
   
-  def Game.create_random
-    new_game = Game.create
-    
-    #create two new characters and add to new game
-    char_one = Character.create_random
-    new_game.characters << char_one
-    char_two = Character.create_random
-    new_game.characters << char_two    
-    new_game.save
-    
-    #create cards for each character
-    char_one.add_random_cards(10)
-    char_two.add_random_cards(10)
-    
-    return new_game
-    
+  def do_power(power)    
+    power.effects.each do |effect|
+      do_effect(effect)
+    end
   end
 
-  def do_round
-    # check to see if both players have an unprocessed move in database
-    # if not, do nothing and report failure
-    return false unless ready_to_do_round?
-    
-    # if so, do the moves and store the results
-    apply_round_effects
-    
-  end
-  
-  # Have all characters in this game finalizing their moves for this round?
-  # For each character that has finalized their moves, 
-  # character.last_round_input should equal game.round
-  def ready_to_do_round?
-    # do all players have an unprocessed move in the database?
-    result = true
-    self.characters.each do |character|
-      result = result && (character.last_round_input == self.round)
-    end
-    return result
-  end
-  
-  def current_moves
-    self.moves.all(:round_played => self.round)
-  end
-  
-  def current_effects
-    current_effects = []
-    
-    #effects from cards played in prior rounds
-    
-    # effects from current_moves with timing = 0 (this round)
-    current_moves.each do |move|
-      move.card.card_effects.each do |effect|
-        if effect.timing == 0
-          current_effects << effect
-        end
-      end
-    end
-    
-    return current_effects
-  end
-  
-  def active_effects
-    # determine active effects
-    active_effects = []
 
-    current_effects.each do |effect|
-      active_effects << effect
-    end
+  def do_effect(effect)
+    # get effect type
+    # get character
+    # get modifiers from character for effect type
+    # calculate total effect
+    # send effect to each target
+    # receive final effect from target
+  end
+
+  #returns array of characters
+  def power_targets(options)
+    # options[:origin] = character that power is originating from
+    # options[:target_type] = :all_enemies
+    #                         :single_enemy
+    #                         :self 
+    #                         :single_ally
+    #                         :single_ally_not_self
+    #                         :all_allies
+    #                         :lowest_health
     
-    # knock out canceled effects
-    
-    
-    return active_effects
   end
 
   # round_effects returns a hash of hashes: {character.id => {:fire => fire damage to character}}  
@@ -143,9 +101,6 @@ class Game
     return round_effects
   end
 
-  def target(origin)
-    self.characters.first(:id.not => origin.id)
-  end
 
   def apply_round_effects
     round_effects.each do |character_id, effect_hash|
@@ -154,11 +109,5 @@ class Game
     
   end
 
-  # for interactive shell testing
-  def do_random_moves
-    self.characters.each do |character|
-      character.do_random_move
-    end
-  end
 
 end
