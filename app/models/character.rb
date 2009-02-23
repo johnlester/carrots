@@ -10,8 +10,6 @@ class Character
   
   belongs_to :user
   belongs_to :game
-  has n, :cards
-  has n, :moves, :class_name => "Move"
 
   def Character.create_random
     new_character = Character.new

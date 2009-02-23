@@ -41,7 +41,7 @@ class NameStyle
               ['a', 'e', 'o', 'i'] ]
                 
   
-  def initialize
+  def initialize(attributes = {})
     self.vowels = COMMON_VOWELS.randomly_weight(COMMON_WEIGHTS)
     self.vowels.update( UNCOMMON_VOWELS.randomly_weight(UNCOMMON_WEIGHTS) )
     self.vowels.update( RARE_VOWELS.randomly_weight(RARE_WEIGHTS) )
@@ -89,7 +89,7 @@ class NameStyle
     pattern << :endings if rand < self.ending_frequency
     
     if pattern[-1] == :mid_cons and pattern[-2] == :mid_cons
-      pattern.slice![-1]
+      pattern.slice!(-1)
       pattern << :vowels
     end
           

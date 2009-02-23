@@ -30,5 +30,7 @@ dependency "dm-timestamps", dm_gems_version
 dependency "dm-types", dm_gems_version        
 dependency "dm-validations", dm_gems_version  
 dependency "dm-serializer", dm_gems_version   
+# dependency "dm-more", dm_gems_version         
+# dependency "dm-is-list", dm_gems_version         
 
 dependency "merb_datamapper", merb_gems_version

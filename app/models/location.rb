@@ -5,7 +5,7 @@ class Location
   property :name, String
   
   belongs_to :world
-  has n, :neighbors, :through => Resource, :class_name => 'Location'
+  #has n, :neighbors, :through => Resource, :class_name => 'Location'
   has n, :agents
 
   def initialize(options = {})

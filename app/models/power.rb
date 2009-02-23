@@ -1,3 +1,15 @@
+# Forms:
+# in file, human readable (name, generic effect in text, conditions)
+# list to be attached to new gear (name, types of gear)
+# on-gear link (name, level)
+# listing presented to user (name, specific effect in text)
+# to be processed in game (character, target list, effect in code, )
+#   Power class (or module)
+#   List of effects.Each effect
+#     determine affected characters
+#     each affected character
+#       send effect to char
+
 class Power
   include DataMapper::Resource
   
@@ -29,6 +41,5 @@ class Power
   #           :damage_type => :fire
   #           :base => 50
   #           :stackable_name => :darkened_soul
-
 
 end

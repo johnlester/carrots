@@ -4,17 +4,24 @@ class Game
   property :id, Serial
   property :round, Integer, :default => 1
   property :finished?, Boolean, :default => false
+  property :play_order, Yaml
+  property :current_character_id, Integer
+  
   has n, :characters
-#  has n, :moves, :class_name => "Move"
+  
+  
   
   def initialize(list_of_characters = [])    
+    self.play_order = []
     list_of_characters.each do |character|     
       self.characters << character
+      self.play_order << character.id
     end
+    
     self.save
   end
 
-  def enemies
+  def enemies_of(character)
     #returns list of enemies
   end
   
@@ -34,7 +41,7 @@ class Game
     # receive final effect from target
   end
 
-  #returns array of characters
+  #returns array of characters (or maybe character.ids)
   def power_targets(options)
     # options[:origin] = character that power is originating from
     # options[:target_type] = :all_enemies

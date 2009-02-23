@@ -6,17 +6,7 @@
 # Scales by level: F(x) = x*(base/2) + (base/2)*x^1.5
 # 
 # 
-# Forms:
-# in file, human readable (name, generic effect in text, conditions)
-# list to be attached to new gear (name, types of gear)
-# on-gear link (name, level)
-# listing presented to user (name, specific effect in text)
-# to be processed in game (character, target list, effect in code, )
-#   Power class (or module)
-#   Each effect
-#     determine affected characters
-#     each affected character
-#       send effect to char
+
 # 
 # Remove <name> stackable. [returns amount removed]
 # <amount> = X + Y * returned var
@@ -24,12 +14,6 @@
 # Add <amount> <name> stackable.
 # 
 # 
-#   effect = {:target => :single_enemy
-            # :effect_type => :damage_consume_stackable
-            # :stackable_name => :positioning
-            # :damage_type => :physical
-            # :base => 10,
-            # :per_stackable => 5}
 # 
 # 
 # 
