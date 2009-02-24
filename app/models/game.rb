@@ -5,20 +5,26 @@ class Game
   property :round, Integer, :default => 1
   property :finished?, Boolean, :default => false
   property :play_order, Yaml
-  property :current_character_id, Integer
   
   has n, :characters
   
   
-  
   def initialize(list_of_characters = [])    
-    self.play_order = []
+    order = []
     list_of_characters.each do |character|     
       self.characters << character
-      self.play_order << character.id
+      order << character.id
     end
-    
+    self.play_order = order.sort_by {rand}
     self.save
+  end
+
+  def current_character
+    self.characters.get!(self.play_order[0])    
+  end
+
+  def move_to_next_character
+    self.play_order << self.play_order.shift
   end
 
   def enemies_of(character)
