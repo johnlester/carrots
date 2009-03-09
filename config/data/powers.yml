@@ -1,0 +1,55 @@
+--- 
+- :name: Burning Terror
+  :source: :gear
+  :effects: 
+  - :damage_type: :fire
+    :effect_type: :damage
+    :base_amount: 100
+    :target_type: :single_enemy
+  - :effect_type: :add_mode
+    :mode_type: :darkened_soul
+    :mode_amount: 1
+    :target_type: :self
+
+- :name: Fireburst
+  :source: :gear
+  :effects: 
+  - :damage_type: :fire
+    :effect_type: :damage
+    :base_amount: 30
+    :target_type: :all_enemies
+
+- :name: Shadowstrike
+  :source: :gear
+  :effects: 
+  - :damage_type: :shadow
+    :effect_type: :damage_consume_mode
+    :base_amount: 50
+    :mode_type: :darkened_soul
+    :amount_per_mode: 150
+    :target_type: :single_enemy
+
+- :name: Dead Touch
+  :source: :character
+  :effects: 
+  - :damage_type: :shadow
+    :effect_type: :damage
+    :base_amount: 25
+    :target_type: :single_enemy
+
+- :name: Torch Swipe
+  :source: :character
+  :effects: 
+  - :damage_type: :fire
+    :effect_type: :damage
+    :base_amount: 25
+    :target_type: :single_enemy
+
+- :name: Chilled Hand
+  :source: :character
+  :effects: 
+  - :damage_type: :cold
+    :effect_type: :damage
+    :base_amount: 25
+    :target_type: :single_enemy
+

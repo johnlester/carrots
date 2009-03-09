@@ -33,13 +33,15 @@ class NameStyle
               ['itz', 'etz', 'izz', 'ezz'],
               ['us', 'ius'],              
               ['ini', 'iti', 'izi', 'ia', 'a', 'ani', 'evi'],
-              ['ar', 'evar', 'ivar'], 
+              ['ar', 'evar', 'ivar', 'var'], 
               ['aar', 'aas', 'aan'],
               ['in', 'ou', 'o', 'u'],
               ['eh', 'ah', 'ih', 'aj'],
               ['a'],
-              ['a', 'e', 'o', 'i'] ]
-                
+              ['a', 'e', 'o', 'i'],
+              ['wood', 'ton', 'ter', 'tree', 'wind', 'line', 'bend'],
+              ['boc', 'bin', 'soc', 'esoc', 'asoc', 'ibin', 'bol'] ]
+
   
   def initialize(attributes = {})
     self.vowels = COMMON_VOWELS.randomly_weight(COMMON_WEIGHTS)
@@ -52,9 +54,9 @@ class NameStyle
     self.mid_only_cons = MID_ONLY_CONS.randomly_weight(UNCOMMON_WEIGHTS)
     
     self.endings = ENDINGS.random
-    self.ending_frequency = [0.6, 0.8, 0.9].random
+    self.ending_frequency = [0.8, 0.9, 1.0, 1.0, 1.0, 1.0].random
 
-    self.length_control = 1 + rand(4)
+    self.length_control = 1 + rand(3)
     
     self.save
   end  
@@ -74,7 +76,8 @@ class NameStyle
     end
 
     #Loop zero or more times to build middle of pattern
-    (rand(self.length_control)).times do
+    middle_loop_count = rand(self.length_control) + rand(2) + rand(2)
+    middle_loop_count.times do
       case pattern[-1]
       when :vowels
         pattern << :mid_cons

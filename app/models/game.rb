@@ -25,6 +25,12 @@ class Game
 
   def move_to_next_character
     self.play_order << self.play_order.shift
+    self.save
+  end
+
+  def create_options(character)
+    number_of_options = 2
+    
   end
 
   def enemies_of(character)

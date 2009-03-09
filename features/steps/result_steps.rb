@@ -13,7 +13,3 @@ end
 Then /^the (.*) ?request should fail/ do |_|
   response.should_not be_successful
 end
-
-Then /^the (.*) ?request should succeed/ do |_|
-  response.should be_successful
-end

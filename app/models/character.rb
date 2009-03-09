@@ -7,18 +7,29 @@ class Character
   property :max_health, Integer, :default => 100
   property :health, Integer, :default => 100
   property :last_round_input, Integer, :default => 0
+  property :character_powers, Yaml, :default => []
   
   belongs_to :user
   belongs_to :game
+  has n, :gears
 
   def Character.create_random
     new_character = Character.new
 
-    #random name
+    # random name
     name_style = NameStyle.first || NameStyle.create
     new_character.name = name_style.random
     
-    new_character.save
+    # add random character-based powers
+    number_of_powers = 2
+    number_of_powers.times do
+      power = Hash.new
+      power[:name] = Power.random(:source => :character)
+      power[:level] = 1
+      new_character.character_powers << power
+    end
+
+    new_character.save    
     return new_character
   end
   
