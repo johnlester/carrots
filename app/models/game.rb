@@ -16,6 +16,7 @@ class Game
       order << character.id
     end
     self.play_order = order.sort_by {rand}
+    self.play_order << :round_end
     self.save
   end
 
@@ -25,12 +26,49 @@ class Game
 
   def move_to_next_character
     self.play_order << self.play_order.shift
+    
+    # if round end, increment round
+    if self.play_order[0] == :round_end
+      self.play_order << self.play_order.shift
+      # TO DO: call round end effects
+      self.round += 1
+    end
     self.save
   end
 
-  def create_options(character)
-    number_of_options = 2
+  def available_powers(character)
+    result = []
+    #personal powers, from gear or character
+    character.character_powers.each do |power|
+      #test to see if can be used
+      can_be_used = true
+      
+      result << power if can_be_used?
+      
+    end
     
+    #location powers
+    
+    
+    return result
+  end
+  
+  def create_options(character)
+    results = []
+    number_of_options = 2
+    options_tried = 0
+    
+    while results.size < number_of_options
+    
+      # add option to result
+      options_tried += 1
+    
+    
+      # check to remove any duplicate options
+    
+    end
+    
+    return results
   end
 
   def enemies_of(character)

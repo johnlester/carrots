@@ -19,6 +19,18 @@
     :base_amount: 30
     :target_type: :all_enemies
 
+- :name: Gloomroom
+  :source: :gear
+  :effects: 
+  - :damage_type: :shadow
+    :effect_type: :damage
+    :base_amount: 60
+    :target_type: :single_enemy
+  - :damage_type: :shadow
+    :effect_type: :damage
+    :base_amount: 10
+    :target_type: :all_enemies
+
 - :name: Shadowstrike
   :source: :gear
   :effects: 
@@ -49,6 +61,14 @@
   :source: :character
   :effects: 
   - :damage_type: :cold
+    :effect_type: :damage
+    :base_amount: 25
+    :target_type: :single_enemy
+
+- :name: Thrown Elbow
+  :source: :character
+  :effects: 
+  - :damage_type: :physical
     :effect_type: :damage
     :base_amount: 25
     :target_type: :single_enemy

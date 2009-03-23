@@ -3,6 +3,8 @@ class Character
   
   
   property :id, Serial
+  property :npc, Boolean, :default => false
+  property :party, Enum[:player, :enemy]
   property :name, String
   property :max_health, Integer, :default => 100
   property :health, Integer, :default => 100
@@ -21,17 +23,22 @@ class Character
     new_character.name = name_style.random
     
     # add random character-based powers
+    new_character.character_powers = []
     number_of_powers = 2
     number_of_powers.times do
       power = Hash.new
       power[:name] = Power.random(:source => :character)
-      power[:level] = 1
+      power[:level] = 5 + rand(6)
       new_character.character_powers << power
     end
 
     new_character.save    
     return new_character
   end
+
+
+
+
   
   def add_random_cards(number = 1)
     number.times do
