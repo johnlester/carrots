@@ -4,7 +4,7 @@ namespace :db do
 
     Merb.start_environment(:environment => ENV['MERB_ENV'] || 'development')    
     
-    tables_to_load = ["powers"]
+    tables_to_load = ["powers", "characters"]
     
     # load data
     tables_to_load.each do |table_name|

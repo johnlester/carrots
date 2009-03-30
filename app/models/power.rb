@@ -8,8 +8,25 @@
 #   Power class (or module)
 #   List of effects.Each effect
 #     determine affected characters
-#     each affected character
+#     each a?????ffected character
 #       send effect to char
+
+# Power object format:
+# power.name = "Burning Terror"
+# power.source = :gear
+# power.creation_frequency = 1000
+# power.option_frequency = 1000
+# power.effects => [
+#                   { :damage_type => :fire,
+#                     :effect_type => :damage,
+#                     :base_amount => 100,
+#                     :target_type => :single_enemy},
+#                   { :effect_type: :add_mode,
+#                     :mode_type => :darkened_soul,
+#                     :mode_amount: 1,
+#                     :target_type: :self}
+#                   ]
+
 
 class Power
   include DataMapper::Resource
@@ -18,6 +35,7 @@ class Power
   property :source, Enum[:character, :gear, :location]
   property :effects, Yaml
   property :creation_frequency, Integer, :default => 1000
+  property :option_frequency, Integer, :default => 1000
   
   # returns String with name of power
   def Power.random(options = {})
@@ -31,4 +49,23 @@ class Power
   end
 
 
+end
+
+class PowerInstance
+  attr_accessor :name, :level, :effect_targets
+    
+  # def initialize(power_name)
+  #   power = Power.first(:name => power_name)
+  #   @name = power.name.dup
+  #   @source = power.source
+  
+  def option_frequency
+    Power.get(self.name).option_frequency
+  end
+
+  def effects
+    Power.get(self.name).effects
+  end
+    
+  
 end

@@ -3,7 +3,7 @@ class Game
   
   property :id, Serial
   property :round, Integer, :default => 1
-  property :finished?, Boolean, :default => false
+  property :finished, Boolean, :default => false
   property :play_order, Yaml
   
   has n, :characters
@@ -43,7 +43,7 @@ class Game
       #test to see if can be used
       can_be_used = true
       
-      result << power if can_be_used?
+      result << power if can_be_used
       
     end
     
@@ -53,26 +53,47 @@ class Game
     return result
   end
   
-  def create_options(character)
+  
+  def generate_options(character)
     results = []
     number_of_options = 2
-    options_tried = 0
+    duplicate_options = 0
+    powers_list = available_powers(character)
+    option_frequencies = powers_list.map {|power| power.option_frequency}
+    enemy_targets = enemies_of(character) # may need just-in-time target selection for some powers
+    ally_targets = allies_of(character)
     
-    while results.size < number_of_options
+    while (results.size < number_of_options) and (duplicate_options < 100) 
     
       # add option to result
-      options_tried += 1
+      new_option = powers_list.random(option_frequencies).dup
+      new_option.effect_targets = []
+      new_option.effects.each do |effect|
+        case effect[:target_type]
+        when :single_enemy
+          new_option.effect_targets << enemy_targets.random.id
+        end
+      end
+          
+      # check to see if it is a duplicate of existing options
+      # if duplicate
+        #duplicate_options += 1
     
-    
-      # check to remove any duplicate options
-    
+      results << new_option
+      
     end
     
     return results
   end
 
   def enemies_of(character)
-    #returns list of enemies
+    #returns array of character id's
+    self.characters.all(:party.not => character.party)
+  end
+
+  def allies_of(character)
+    #returns array of character id's
+    self.characters.all(:party => character.party)
   end
   
   def do_power(power)    

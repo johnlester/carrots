@@ -1,9 +1,0 @@
-species:
-  Lich:
-    frequency: 1
-    min_health: 300
-    max_health: 500
-  Vampire:
-    frequency: 2
-    min_health: 100
-    max_health: 300

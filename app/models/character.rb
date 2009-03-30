@@ -4,7 +4,7 @@ class Character
   
   property :id, Serial
   property :npc, Boolean, :default => false
-  property :party, Enum[:player, :enemy]
+  property :party, Integer
   property :name, String
   property :max_health, Integer, :default => 100
   property :health, Integer, :default => 100
@@ -26,13 +26,13 @@ class Character
     new_character.character_powers = []
     number_of_powers = 2
     number_of_powers.times do
-      power = Hash.new
-      power[:name] = Power.random(:source => :character)
-      power[:level] = 5 + rand(6)
-      new_character.character_powers << power
+      power_instance = PowerInstance.new
+      power_instance.name = (Power.random(:source => :character))
+      power_instance.level = 5 + rand(6)
+      new_character.character_powers << power_instance
     end
 
-    new_character.save    
+    new_character.save!
     return new_character
   end
 

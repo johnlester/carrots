@@ -1,0 +1,50 @@
+--- 
+- :name: Herodude
+  :id: 1
+  :party: 1
+  :game_id:
+  :user_id: 
+  :last_round_input: 0
+  :npc: false
+  :max_health: 100
+  :health: 100
+  :character_powers: 
+  - !ruby/object:PowerInstance 
+    level: 5
+    name: Dead Touch
+  - !ruby/object:PowerInstance 
+    level: 10
+    name: Thrown Elbow
+- :name: Sikekickus
+  :id: 2
+  :party: 1
+  :game_id:
+  :user_id: 
+  :last_round_input: 0
+  :npc: false
+  :max_health: 100
+  :health: 100
+  :character_powers: 
+  - !ruby/object:PowerInstance 
+    level: 5
+    name: Dead Touch
+  - !ruby/object:PowerInstance 
+    level: 10
+    name: Chilled Hand
+- :name: Evilguy
+  :id: 3
+  :party: 2
+  :game_id:
+  :user_id: 
+  :last_round_input: 0
+  :npc: false
+  :max_health: 100
+  :health: 100
+  :character_powers: 
+  - !ruby/object:PowerInstance 
+    level: 4
+    name: Thrown Elbow
+  - !ruby/object:PowerInstance 
+    level: 6
+    name: Chilled Hand
+
