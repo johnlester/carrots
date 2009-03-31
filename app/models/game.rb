@@ -2,38 +2,84 @@ class Game
   include DataMapper::Resource
   
   property :id, Serial
-  property :round, Integer, :default => 1
+  property :round, Integer, :default => 0
   property :finished, Boolean, :default => false
   property :play_order, Yaml
+  property :play_history, Yaml, :default => [[]]
+  property :turn_step, Integer, :default => 0
   
   has n, :characters
   
   
-  def initialize(list_of_characters = [])    
+  def Game.start_game(list_of_characters = [])
+    new_game = Game.new
     order = []
     list_of_characters.each do |character|     
-      self.characters << character
+      new_game.characters << character
       order << character.id
     end
-    self.play_order = order.sort_by {rand}
-    self.play_order << :round_end
-    self.save
+    new_game.play_order = order.sort_by {rand}
+    new_game.play_order << :round_end
+    new_game.play_history = [[]]
+    new_game.save!
+    return new_game
   end
 
+  ################# round order functions
   def current_character
     self.characters.get!(self.play_order[0])    
   end
 
   def move_to_next_character
     self.play_order << self.play_order.shift
+    self.turn_step += 1
     
     # if round end, increment round
     if self.play_order[0] == :round_end
       self.play_order << self.play_order.shift
       # TO DO: call round end effects
       self.round += 1
+      self.turn_step = 0
     end
-    self.save
+    self.save!
+  end
+
+
+  ################### option-creation functions  
+  
+  def current_character_options
+    # make options for current character and store (unless alreay made)
+    unless self.play_history[self.round][self.turn_step]
+      self.play_history[self.round][self.turn_step] = {:options => generate_options(current_character), :id => current_character.id}
+      self.save!      
+    end    
+    return self.play_history[self.round][self.turn_step]
+  end
+
+  def generate_options(character)
+    results = []
+    number_of_options = 2
+    duplicate_options = 0
+    powers_list = available_powers(character)
+    option_frequencies = powers_list.map {|power| power.option_frequency}
+    enemy_targets = enemies_of(character) # may need just-in-time target selection for some powers
+    ally_targets = allies_of(character)
+    while (results.size < number_of_options) and (duplicate_options < 100)     
+      # add option to result
+      new_option = powers_list.random(option_frequencies).dup
+      new_option.effect_targets = []
+      new_option.effects.each do |effect|
+        case effect[:target_type]
+        when :single_enemy
+          new_option.effect_targets << enemy_targets.random.id
+        end
+      end          
+      # check to see if it is a duplicate of existing options
+      # if duplicate
+        #duplicate_options += 1    
+      results << new_option      
+    end    
+    return results
   end
 
   def available_powers(character)
@@ -43,47 +89,11 @@ class Game
       #test to see if can be used
       can_be_used = true
       
-      result << power if can_be_used
-      
+      result << power if can_be_used      
     end
-    
     #location powers
     
-    
     return result
-  end
-  
-  
-  def generate_options(character)
-    results = []
-    number_of_options = 2
-    duplicate_options = 0
-    powers_list = available_powers(character)
-    option_frequencies = powers_list.map {|power| power.option_frequency}
-    enemy_targets = enemies_of(character) # may need just-in-time target selection for some powers
-    ally_targets = allies_of(character)
-    
-    while (results.size < number_of_options) and (duplicate_options < 100) 
-    
-      # add option to result
-      new_option = powers_list.random(option_frequencies).dup
-      new_option.effect_targets = []
-      new_option.effects.each do |effect|
-        case effect[:target_type]
-        when :single_enemy
-          new_option.effect_targets << enemy_targets.random.id
-        end
-      end
-          
-      # check to see if it is a duplicate of existing options
-      # if duplicate
-        #duplicate_options += 1
-    
-      results << new_option
-      
-    end
-    
-    return results
   end
 
   def enemies_of(character)
@@ -95,6 +105,9 @@ class Game
     #returns array of character id's
     self.characters.all(:party => character.party)
   end
+  
+
+  ##################### do round functions
   
   def do_power(power)    
     power.effects.each do |effect|

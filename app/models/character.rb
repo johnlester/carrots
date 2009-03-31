@@ -9,7 +9,7 @@ class Character
   property :max_health, Integer, :default => 100
   property :health, Integer, :default => 100
   property :last_round_input, Integer, :default => 0
-  property :character_powers, Yaml, :default => []
+  property :character_powers, Yaml, :default => [], :lazy => false
   
   belongs_to :user
   belongs_to :game
