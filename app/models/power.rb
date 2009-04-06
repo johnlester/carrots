@@ -33,7 +33,7 @@ class Power
   
   property :name, String, :key => true
   property :source, Enum[:character, :gear, :location]
-  property :effects, Yaml
+  property :effect_templates, Yaml
   property :creation_frequency, Integer, :default => 1000
   property :option_frequency, Integer, :default => 1000
   
@@ -51,8 +51,8 @@ class Power
 
 end
 
-class PowerInstance
-  attr_accessor :name, :level, :effect_targets
+class PowerInstance #tied to specific character, piece of gear, or location
+  attr_accessor :name, :level
     
   # def initialize(power_name)
   #   power = Power.first(:name => power_name)
@@ -63,9 +63,8 @@ class PowerInstance
     Power.get(self.name).option_frequency
   end
 
-  def effects
-    Power.get(self.name).effects
-  end
-    
-  
+  def effect_templates
+    Power.get(self.name).effect_templates
+  end  
 end
+

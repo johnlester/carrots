@@ -20,7 +20,7 @@ class Agent
   has n, :goals
   belongs_to :alliance
   belongs_to :location
-  belongs_to :last_attacker, :class_name => 'Agent'
+  # belongs_to :last_attacker, :class_name => 'Agent'
   belongs_to :world
 
   def Agent.create_random

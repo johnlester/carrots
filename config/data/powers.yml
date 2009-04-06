@@ -1,7 +1,7 @@
 --- 
 - :name: Burning Terror
   :source: :gear
-  :effects: 
+  :effect_templates: 
   - :damage_type: :fire
     :effect_type: :damage
     :base_amount: 100
@@ -13,7 +13,7 @@
 
 - :name: Fireburst
   :source: :gear
-  :effects: 
+  :effect_templates: 
   - :damage_type: :fire
     :effect_type: :damage
     :base_amount: 30
@@ -21,7 +21,7 @@
 
 - :name: Gloomroom
   :source: :gear
-  :effects: 
+  :effect_templates: 
   - :damage_type: :shadow
     :effect_type: :damage
     :base_amount: 60
@@ -33,7 +33,7 @@
 
 - :name: Shadowstrike
   :source: :gear
-  :effects: 
+  :effect_templates: 
   - :damage_type: :shadow
     :effect_type: :damage_consume_mode
     :base_amount: 50
@@ -43,7 +43,7 @@
 
 - :name: Dead Touch
   :source: :character
-  :effects: 
+  :effect_templates: 
   - :damage_type: :shadow
     :effect_type: :damage
     :base_amount: 25
@@ -51,7 +51,7 @@
 
 - :name: Torch Swipe
   :source: :character
-  :effects: 
+  :effect_templates: 
   - :damage_type: :fire
     :effect_type: :damage
     :base_amount: 25
@@ -59,7 +59,7 @@
 
 - :name: Chilled Hand
   :source: :character
-  :effects: 
+  :effect_templates: 
   - :damage_type: :cold
     :effect_type: :damage
     :base_amount: 25
@@ -67,7 +67,7 @@
 
 - :name: Thrown Elbow
   :source: :character
-  :effects: 
+  :effect_templates: 
   - :damage_type: :physical
     :effect_type: :damage
     :base_amount: 25

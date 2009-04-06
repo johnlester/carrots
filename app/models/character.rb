@@ -8,6 +8,7 @@ class Character
   property :name, String
   property :max_health, Integer, :default => 100
   property :health, Integer, :default => 100
+  property :dead, Boolean, :default => false
   property :last_round_input, Integer, :default => 0
   property :character_powers, Yaml, :default => [], :lazy => false
   
@@ -36,9 +37,47 @@ class Character
     return new_character
   end
 
+  def do_result(result)
+    case result[:result_type]
+    when :damage
+      self.health -= result[:amount]
+      if self.health <= 0
+        self.health = 0
+        self.dead = true
+      end
+      self.save!
+    end
+  end
 
-
-
+  def receive_effect(effect)
+    # effect[:origin] = sending character
+    # effect[:effect_type] = :damage / :add_mode
+    # effect[:damage_type] = :fire / :cold / :physical
+    # effect[:mode_type] = :darkened_soul
+    # effect[:amount] = integer (includes leveling and origin effects)    
+    result = {}
+    case effect[:effect_type]
+    when :damage
+      amount = effect[:amount]      
+      # TO DO: call receiver adjustments based on damage type, etc.
+      result[:result_type] = :damage
+      result[:amount] = amount
+    end    
+    return result
+  end
+  
+  def send_effect(effect)
+    package = effect
+    package[:origin] = self
+    case effect[:effect_type]
+    when :damage
+      amount = effect[:amount]
+      # TO DO: level adjustments
+      # TO DO: call sender adjustments based on damage type, etc.
+      result[:amount] = amount
+    end    
+    return target.receive_effect(package)
+  end
   
   def add_random_cards(number = 1)
     number.times do

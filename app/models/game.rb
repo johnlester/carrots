@@ -5,7 +5,7 @@ class Game
   property :round, Integer, :default => 0
   property :finished, Boolean, :default => false
   property :play_order, Yaml
-  property :play_history, Yaml, :default => [[]]
+  property :play_history, Yaml, :default => [[]]  # play_history[round][turnstep] = {}
   property :turn_step, Integer, :default => 0
   
   has n, :characters
@@ -42,31 +42,66 @@ class Game
       self.turn_step = 0
     end
     self.save!
+    current_character_options
   end
 
+  ##################### do round functions
+  
+  # Game states:
+  # just created: round = 0, turn_step = 0, play_history = [[]]
+  # call current_character_options: play_history[round = 0][turn_step = 0] = {:options, :id, :results = false, :selection}
+  # 
+  
+  def update_game
+    loop do
+      break unless current_character_selection
+      process_turn       
+      move_to_next_character
+    end    
+    # if current character has no input and is not a npc
+    return false
+  end
 
   ################### option-creation functions  
+  def current_character_selection
+    if current_character_options[:selection]
+      return current_character_options[:selection]
+    end    
+    if current_character.npc
+      current_character_options[:selection] = make_npc_selection
+      self.save!
+      return current_character_options[:selection]
+    else  # player character
+      return false
+    end
+  end
   
   def current_character_options
-    # make options for current character and store (unless alreay made)
+    # make options for current character and store (unless already made)
     unless self.play_history[self.round][self.turn_step]
-      self.play_history[self.round][self.turn_step] = {:options => generate_options(current_character), :id => current_character.id}
+      self.play_history[self.round][self.turn_step] = {:effect_results_list => generate_options(current_character), :origin_id => current_character.id, :selection => false}
       self.save!      
     end    
     return self.play_history[self.round][self.turn_step]
   end
 
+  def effect_result(effect)
+    targets.each do |target|
+      effect[:target] = target
+    return origin.send_effect()
+  end
+  
   def generate_options(character)
     results = []
     number_of_options = 2
     duplicate_options = 0
-    powers_list = available_powers(character)
-    option_frequencies = powers_list.map {|power| power.option_frequency}
+    power_instance_list = available_power_instances(character)
+    option_frequencies = power_instance_list.map {|power| power.option_frequency}
     enemy_targets = enemies_of(character) # may need just-in-time target selection for some powers
     ally_targets = allies_of(character)
     while (results.size < number_of_options) and (duplicate_options < 100)     
       # add option to result
-      new_option = powers_list.random(option_frequencies).dup
+      new_option = PowerOption.new(power_instance_list.random(option_frequencies))
       new_option.effect_targets = []
       new_option.effects.each do |effect|
         case effect[:target_type]
@@ -76,13 +111,14 @@ class Game
       end          
       # check to see if it is a duplicate of existing options
       # if duplicate
-        #duplicate_options += 1    
+        #duplicate_options += 1
+      # else    
       results << new_option      
     end    
     return results
   end
 
-  def available_powers(character)
+  def available_power_instances(character)
     result = []
     #personal powers, from gear or character
     character.character_powers.each do |power|
@@ -102,41 +138,77 @@ class Game
   end
 
   def allies_of(character)
-    #returns array of character id's
+    #returns array of character i
     self.characters.all(:party => character.party)
   end
   
 
-  ##################### do round functions
-  
-  def do_power(power)    
-    power.effects.each do |effect|
-      do_effect(effect)
+
+
+  # current_character_options[:results] = [{:target = char_id, :result = {:result_type = :damage, :amount = 10}}]
+  def process_turn
+    current_character_options[:results].each do |result|
+      self.characters.get(result[:target]).do_result(result[:result])
     end
-  end
+  end  
+
+  # def process_turn
+  #   return false if current_character_options[:results] # already processed
+  #   results = []
+  #   option_to_do = current_character_options[:options][current_character_options[:selection]]
+  #   option_to_do.effects.each do |effect|
+  #     #establish targets
+  #     case effect[:target_type]
+  #     when :single_enemy
+  #       targets = [self.characters.get(option_to_do.effect_targets.shift)]
+  #     end #case
+  #     # origin translations
+  #     # send to targers
+  #     targets.each do |target|
+  #       target.
+  #   end
+  # end
+  
+  # returns description of effects  
+  # def do_effect(effect)
+  #   result = []
+  #   # {:effect_type=>:damage, :target_type=>:single_enemy, :damage_type=>:shadow, :base_amount=>25}
+  #   case effect[:target_type]
+  #   when :single_enemy
+  #     targets = [self.characters.get()]
+  #   
+  #   # get effect type
+  #   # get character
+  #   # get modifiers from character for effect type
+  #   # calculate total effect
+  #   # send effect to each target
+  #   # receive final effect from target
+  # end
 
 
-  def do_effect(effect)
-    # get effect type
-    # get character
-    # get modifiers from character for effect type
-    # calculate total effect
-    # send effect to each target
-    # receive final effect from target
+  
+  def pc_select(selection)
+    current_character_options[:selection] = selection
+    self.save!
   end
+  
+  def make_npc_selection
+    # returns selection
+  end
+  
 
   #returns array of characters (or maybe character.ids)
-  def power_targets(options)
-    # options[:origin] = character that power is originating from
-    # options[:target_type] = :all_enemies
-    #                         :single_enemy
-    #                         :self 
-    #                         :single_ally
-    #                         :single_ally_not_self
-    #                         :all_allies
-    #                         :lowest_health
-    
-  end
+  # def power_targets(options)
+  #   # options[:origin] = character that power is originating from
+  #   # options[:target_type] = :all_enemies
+  #   #                         :single_enemy
+  #   #                         :self 
+  #   #                         :single_ally
+  #   #                         :single_ally_not_self
+  #   #                         :all_allies
+  #   #                         :lowest_health
+  #   
+  # end
 
   # round_effects returns a hash of hashes: {character.id => {:fire => fire damage to character}}  
   def round_effects
